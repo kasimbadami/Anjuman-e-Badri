@@ -4,3 +4,11 @@ http://jabalpur.technologyworkshops.net/index.php/app/mobileapp/index
 
 App name: Anjuman-e-Badri
 
+
+
+Login in app with:
+Username: 20382166
+Password:20382166
+
+Test notifications with :
+http://jabalpur.technologyworkshops.net/index.php/app/mobileapp/sendnotificationstest
