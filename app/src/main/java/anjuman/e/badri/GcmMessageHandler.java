@@ -17,7 +17,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -52,14 +51,14 @@ public class GcmMessageHandler extends FirebaseMessagingService {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         try {
             // Get updated InstanceID token.
-            String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+//            String refreshedToken = FirebaseInstanceId.getInstance().getToken();
             if (BuildConfig.DEBUG)
-                Log.d(TAG, "@@@Refreshed token: " + refreshedToken);
+                Log.d(TAG, "@@@Refreshed token: " + s);
 
-            sharedPreferences.edit().putString(GCM_TOKEN, refreshedToken).apply();
+            sharedPreferences.edit().putString(GCM_TOKEN, s).apply();
 
             // Send token to server
-            sendRegistrationToServer(refreshedToken);
+            sendRegistrationToServer(s);
 
         } catch (Exception e) {
             if (BuildConfig.DEBUG) {

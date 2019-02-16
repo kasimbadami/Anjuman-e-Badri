@@ -13,7 +13,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static DBHelper _Instance;
     private SQLiteDatabase mSqLiteDatabase;
 
-    private static String DATABASE_NAME = "kasim.db";
+    private static String DATABASE_NAME = "anjumanebadri.db";
     private static int DATABASE_VERSION = 1;
 
     private DBHelper(Context context) {
