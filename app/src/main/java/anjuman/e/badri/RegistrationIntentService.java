@@ -24,6 +24,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import static anjuman.e.badri.GcmMessageHandler.GCM_TOKEN;
+import static anjuman.e.badri.GcmMessageHandler.REGISTRATION_ID;
+
 public class RegistrationIntentService extends IntentService {
 
     // abbreviated tag name
@@ -69,15 +72,17 @@ public class RegistrationIntentService extends IntentService {
     private void sendRegistrationToServer() {
 
         // send network request
-        Log.d(TAG, "@@@In sendRegistrationToServer()");
+        if (BuildConfig.DEBUG)
+            Log.d(TAG, "@@@In sendRegistrationToServer()");
         JSONObject jsonObject = new JSONObject();
         try {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            jsonObject.put("deviceId", sp.getString(MyInstanceIDListenerService.GCM_TOKEN, ""));
-            jsonObject.put("itsid", MyInstanceIDListenerService.REGISTRATION_ID);
+            jsonObject.put("deviceId", sp.getString(GCM_TOKEN, ""));
+            jsonObject.put("itsid", REGISTRATION_ID);
 
             String result = register(MainActivity.mRegisterURL, jsonObject.toString());
-            Log.d(TAG, "@@@Registration result -> " + result);
+            if (BuildConfig.DEBUG)
+                Log.d(TAG, "@@@Registration result -> " + result);
             if (TextUtils.isEmpty(result)) {
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
                 sharedPreferences.edit().putBoolean(SENT_TOKEN_TO_SERVER, false).apply();
@@ -87,27 +92,33 @@ public class RegistrationIntentService extends IntentService {
                 if (jsonObject1.has("status")) {
                     String status = jsonObject1.getString("status");
                     if (!TextUtils.isEmpty(status) && status.equalsIgnoreCase("success")) {
-                        Log.d(TAG, "@@@Registration success");
+                        if (BuildConfig.DEBUG)
+                            Log.d(TAG, "@@@Registration success");
                         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
                         sharedPreferences.edit().putBoolean(SENT_TOKEN_TO_SERVER, true).apply();
                     } else {
-                        Log.d(TAG, "@@@Registration failure");
+                        if (BuildConfig.DEBUG)
+                            Log.d(TAG, "@@@Registration failure");
                         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
                         sharedPreferences.edit().putBoolean(SENT_TOKEN_TO_SERVER, false).apply();
                     }
                 } else {
-                    Log.d(TAG, "@@@Registration failure");
+                    if (BuildConfig.DEBUG)
+                        Log.d(TAG, "@@@Registration failure");
                     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
                     sharedPreferences.edit().putBoolean(SENT_TOKEN_TO_SERVER, false).apply();
                 }
             }
         } catch (JSONException e) {
-            e.printStackTrace();
-            Log.d(TAG, "@@@Registration failure");
+            if (BuildConfig.DEBUG) {
+                e.printStackTrace();
+                Log.d(TAG, "@@@Registration failure");
+            }
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             sharedPreferences.edit().putBoolean(SENT_TOKEN_TO_SERVER, false).apply();
         } catch (Exception e) {
-            e.printStackTrace();
+            if (BuildConfig.DEBUG)
+                e.printStackTrace();
         }
     }
 

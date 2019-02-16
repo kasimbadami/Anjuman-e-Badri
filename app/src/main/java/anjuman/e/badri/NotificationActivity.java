@@ -109,7 +109,8 @@ public class NotificationActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
-        Log.d("AMRUT", " called");
+        if (BuildConfig.DEBUG)
+            Log.d("AMRUT", " called");
 
         mNotificationses.clear();
 

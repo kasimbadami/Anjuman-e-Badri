@@ -32,7 +32,8 @@ public class MyInstanceIDListenerService extends FirebaseInstanceIdService {
         try {
             // Get updated InstanceID token.
             String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-            Log.d(TAG, "@@@Refreshed token: " + refreshedToken);
+            if (BuildConfig.DEBUG)
+                Log.d(TAG, "@@@Refreshed token: " + refreshedToken);
 
             sharedPreferences.edit().putString(GCM_TOKEN, refreshedToken).apply();
 
@@ -40,11 +41,11 @@ public class MyInstanceIDListenerService extends FirebaseInstanceIdService {
             sendRegistrationToServer(refreshedToken);
 
         } catch (Exception e) {
+            if (BuildConfig.DEBUG) {
+                e.printStackTrace();
 
-            e.printStackTrace();
-
-            Log.d(TAG, "Failed to complete token refresh", e);
-
+                Log.d(TAG, "Failed to complete token refresh", e);
+            }
             // If an exception happens while fetching the new token or updating our registration data
             // on a third-party server, this ensures that we'll attempt the update at a later time.
             sharedPreferences.edit().putBoolean(SENT_TOKEN_TO_SERVER, false).apply();
@@ -57,7 +58,8 @@ public class MyInstanceIDListenerService extends FirebaseInstanceIdService {
     private void sendRegistrationToServer(String token) {
 
         // Add custom implementation, as needed.
-        Log.d(TAG, "@@@In sendRegistrationToServer()");
+        if (BuildConfig.DEBUG)
+            Log.d(TAG, "@@@In sendRegistrationToServer()");
 
         // send network request
         JSONObject jsonObject = new JSONObject();
@@ -66,7 +68,8 @@ public class MyInstanceIDListenerService extends FirebaseInstanceIdService {
             jsonObject.put("itsid", REGISTRATION_ID);
 
             String result = register(MainActivity.mRegisterURL, jsonObject.toString());
-            Log.d(TAG, "@@@Registration result -> " + result);
+            if (BuildConfig.DEBUG)
+                Log.d(TAG, "@@@Registration result -> " + result);
             if (TextUtils.isEmpty(result)) {
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
                 sharedPreferences.edit().putBoolean(SENT_TOKEN_TO_SERVER, false).apply();
@@ -76,27 +79,33 @@ public class MyInstanceIDListenerService extends FirebaseInstanceIdService {
                 if (jsonObject1.has("status")) {
                     String status = jsonObject1.getString("status");
                     if (!TextUtils.isEmpty(status) && status.equalsIgnoreCase("success")) {
-                        Log.d(TAG, "@@@Registration success");
+                        if (BuildConfig.DEBUG)
+                            Log.d(TAG, "@@@Registration success");
                         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
                         sharedPreferences.edit().putBoolean(SENT_TOKEN_TO_SERVER, true).apply();
                     } else {
-                        Log.d(TAG, "@@@Registration failure");
+                        if (BuildConfig.DEBUG)
+                            Log.d(TAG, "@@@Registration failure");
                         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
                         sharedPreferences.edit().putBoolean(SENT_TOKEN_TO_SERVER, false).apply();
                     }
                 } else {
-                    Log.d(TAG, "@@@Registration failure");
+                    if (BuildConfig.DEBUG)
+                        Log.d(TAG, "@@@Registration failure");
                     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
                     sharedPreferences.edit().putBoolean(SENT_TOKEN_TO_SERVER, false).apply();
                 }
             }
         } catch (JSONException e) {
-            e.printStackTrace();
-            Log.d(TAG, "@@@Registration failure");
+            if (BuildConfig.DEBUG) {
+                e.printStackTrace();
+                Log.d(TAG, "@@@Registration failure");
+            }
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             sharedPreferences.edit().putBoolean(SENT_TOKEN_TO_SERVER, false).apply();
         } catch (Exception e) {
-            e.printStackTrace();
+            if (BuildConfig.DEBUG)
+                e.printStackTrace();
         }
     }
 

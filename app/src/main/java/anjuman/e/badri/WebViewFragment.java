@@ -129,9 +129,10 @@ public class WebViewFragment extends Fragment {
 
                         if (title.equalsIgnoreCase("Dashboard")) {
                             String urlSeparated[] = url.split("/");
-                            Log.d(TAG, "@@@Url -> " + url.toString());
+                            if (BuildConfig.DEBUG)
+                                Log.d(TAG, "@@@Url -> " + url.toString());
                             if (urlSeparated.length > 1)
-                                MyInstanceIDListenerService.REGISTRATION_ID = urlSeparated[urlSeparated.length - 1];
+                                GcmMessageHandler.REGISTRATION_ID = urlSeparated[urlSeparated.length - 1];
 
                             if (getActivity() != null) {
                                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
