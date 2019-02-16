@@ -8,10 +8,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-
 import com.crashlytics.android.Crashlytics;
-
 import io.fabric.sdk.android.Fabric;
+
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -23,6 +22,7 @@ public class SplashActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
+
         try {
             setContentView(R.layout.activity_splash);
             ActionBar actionBar = getSupportActionBar();

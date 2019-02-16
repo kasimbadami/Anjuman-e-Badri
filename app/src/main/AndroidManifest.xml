@@ -81,10 +81,6 @@
             </intent-filter>
         </service>
 
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="2b63d6d9d0b40ca00b36a1bcb064de51e2237a34" />
-
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
@@ -97,6 +93,9 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorPrimaryDark" />
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="ad63037f022c4ec5d3fb5c3756a715f0c7247015" />
     </application>
 
 </manifest>
