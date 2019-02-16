@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "590775243899",
+    "firebase_url": "https://anjuman-e-badri.firebaseio.com",
+    "project_id": "anjuman-e-badri",
+    "storage_bucket": "anjuman-e-badri.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:590775243899:android:dd71df9d4a90182d",
+        "android_client_info": {
+          "package_name": "anjuman.e.badri"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "590775243899-vgei40tf67qak35kr3ao8co3rj972eb9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJnV7nlv1fsyw-673yOVUJFVLa3r1UCeY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

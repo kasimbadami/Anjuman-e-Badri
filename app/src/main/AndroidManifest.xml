@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="anjuman.e.badri">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
+        android:theme="@style/AppTheme">
+
+        <activity android:name="anjuman.e.badri.MainActivity" />
+
+        <activity android:name="anjuman.e.badri.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="anjuman.e.badri.NotificationActivity"
+            android:launchMode="singleInstance" />
+
+        <activity
+            android:name="anjuman.e.badri.NotificationDetailsActivity"
+            android:launchMode="singleInstance">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="anjuman.e.badri.NotificationActivity" />
+        </activity>
+
+        <service
+            android:name="anjuman.e.badri.RegistrationIntentService"
+            android:exported="false" />
+
+        <service
+            android:name="anjuman.e.badri.MyInstanceIDListenerService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <!--
+        <service
+            android:name="BadriMyInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
+
+
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="badri />
+                &lt;!&ndash;<action android:name="com.google.android.c2dm.intent.REGISTRATION" />&ndash;&gt;
+            </intent-filter>
+        </receiver>
+        -->
+
+        <service
+            android:name="anjuman.e.badri.GcmMessageHandler"
+            android:exported="false">
+            <intent-filter>
+                <!--<action android:name="com.google.android.c2dm.intent.RECEIVE" />-->
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="2b63d6d9d0b40ca00b36a1bcb064de51e2237a34" />
+
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/app_name" />
+
+    </application>
+
+</manifest>

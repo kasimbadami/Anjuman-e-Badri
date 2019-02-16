@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#009688</color>
+    <color name="colorPrimaryDark">#00786D</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="notification_screen_bg">#6A8953</color>
+    <color name="notification_item_texts">#FFFFFF</color>
+    <color name="notification_card_bg">#009688</color>
+</resources>

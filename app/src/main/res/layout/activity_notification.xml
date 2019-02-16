@@ -1,0 +1,49 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    tools:context="afour.com.uniapp.fragments.AlljobsFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_notifications"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="05dp"
+        android:layout_marginRight="05dp"
+        android:padding="05dp"
+        android:scrollbars="vertical"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/loading_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_margin="05dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <ProgressBar
+            android:id="@+id/progress_download"
+            style="@android:style/Animation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <anjuman.e.badri.CustomTextView
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="05dp"
+            android:gravity="center"
+            android:text="@string/please_wait"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            app:FontName="@string/font" />
+    </LinearLayout>
+
+</RelativeLayout>
