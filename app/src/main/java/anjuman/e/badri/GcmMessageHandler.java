@@ -217,7 +217,7 @@ public class GcmMessageHandler extends FirebaseMessagingService {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notifications", NotificationManager.IMPORTANCE_DEFAULT);
 
-                    notificationChannel.setDescription("Channel description");
+                    notificationChannel.setDescription("Anjuman-e-Badri Notification Channel");
                     notificationChannel.enableLights(true);
                     notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
                     notificationChannel.enableVibration(true);
@@ -430,7 +430,7 @@ public class GcmMessageHandler extends FirebaseMessagingService {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notifications", NotificationManager.IMPORTANCE_DEFAULT);
 
-                    notificationChannel.setDescription("Channel description");
+                    notificationChannel.setDescription("Anjuman-e-Badri Notification Channel");
                     notificationChannel.enableLights(true);
                     notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
                     notificationChannel.enableVibration(true);
@@ -469,9 +469,7 @@ public class GcmMessageHandler extends FirebaseMessagingService {
                     }
                 }
 
-
                 mBuilder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
-
 
                 if (mNotificationManager != null) {
                     mNotificationManager.notify(new Random().nextInt(), mBuilder.build());
