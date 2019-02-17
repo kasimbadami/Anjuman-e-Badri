@@ -122,59 +122,62 @@ public class WebViewFragment extends Fragment {
 
                     if (!TextUtils.isEmpty(view.getTitle())) {
                         String title = view.getTitle().toLowerCase();
-                        if (title.equalsIgnoreCase(getString(R.string.app_name)))
-                            mNotificationActionButton.setVisibility(View.GONE);
-                        else
-                            mNotificationActionButton.setVisibility(View.VISIBLE);
 
-                        if (title.equalsIgnoreCase("Dashboard")) {
-                            String urlSeparated[] = url.split("/");
-                            if (BuildConfig.DEBUG)
-                                Log.d(TAG, "@@@Url -> " + url.toString());
-                            if (urlSeparated.length > 1)
-                                GcmMessageHandler.REGISTRATION_ID = urlSeparated[urlSeparated.length - 1];
+                        if (getActivity() != null && isAdded()) {
+                            if (title.equalsIgnoreCase(getString(R.string.app_name)))
+                                mNotificationActionButton.setVisibility(View.GONE);
+                            else
+                                mNotificationActionButton.setVisibility(View.VISIBLE);
 
-                            if (getActivity() != null) {
-                                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                                boolean aBoolean = sharedPreferences.getBoolean(RegistrationIntentService.SENT_TOKEN_TO_SERVER, false);
-                                if (!aBoolean) {
+                            if (title.equalsIgnoreCase("Dashboard")) {
+                                String urlSeparated[] = url.split("/");
+                                if (BuildConfig.DEBUG)
+                                    Log.d(TAG, "@@@Url -> " + url.toString());
+                                if (urlSeparated.length > 1)
+                                    GcmMessageHandler.REGISTRATION_ID = urlSeparated[urlSeparated.length - 1];
 
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                        getActivity().startForegroundService(new Intent(getActivity(), RegistrationIntentService.class));
-                                    } else {
-                                        getActivity().startService(new Intent(getActivity(), RegistrationIntentService.class));
-                                    }
+                                if (getActivity() != null) {
+                                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                                    boolean aBoolean = sharedPreferences.getBoolean(RegistrationIntentService.SENT_TOKEN_TO_SERVER, false);
+                                    if (!aBoolean) {
+
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                            getActivity().startForegroundService(new Intent(getActivity(), RegistrationIntentService.class));
+                                        } else {
+                                            getActivity().startService(new Intent(getActivity(), RegistrationIntentService.class));
+                                        }
 
 //                                    getActivity().startService(new Intent(getActivity(), RegistrationIntentService.class));
+                                    }
                                 }
                             }
                         }
                     }
                 }
             });
+            if (getActivity() != null && isAdded()) {
+                mWebView.setNetworkAvailable(isNetworkConnected(getActivity()));
 
-            mWebView.setNetworkAvailable(isNetworkConnected(getActivity()));
-
-            if (isNetworkConnected(getActivity())) {
-                mWebView.loadUrl(MainActivity.mURL);
-                mWebView.setVisibility(View.VISIBLE);
-                mEmptyView.setVisibility(View.GONE);
-            } else {
-                mWebView.setVisibility(View.GONE);
-                mNotificationActionButton.setVisibility(View.GONE);
-                mEmptyView.setVisibility(View.VISIBLE);
-                if (isAdded())
-                    mEmptyView.setText(getString(R.string.no_internet));
-            }
-
-            mNotificationActionButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (activity != null)
-                        activity.startActivity(new Intent(activity, NotificationActivity.class));
+                if (isNetworkConnected(getActivity())) {
+                    mWebView.loadUrl(MainActivity.mURL);
+                    mWebView.setVisibility(View.VISIBLE);
+                    mEmptyView.setVisibility(View.GONE);
+                } else {
+                    mWebView.setVisibility(View.GONE);
+                    mNotificationActionButton.setVisibility(View.GONE);
+                    mEmptyView.setVisibility(View.VISIBLE);
+                    if (isAdded())
+                        mEmptyView.setText(getString(R.string.no_internet));
                 }
-            });
 
+                mNotificationActionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (activity != null)
+                            activity.startActivity(new Intent(activity, NotificationActivity.class));
+                    }
+                });
+            }
             return viewGroup;
         } catch (Exception e) {
             if (BuildConfig.DEBUG)

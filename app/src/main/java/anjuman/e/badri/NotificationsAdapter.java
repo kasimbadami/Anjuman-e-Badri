@@ -3,6 +3,7 @@ package anjuman.e.badri;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -34,13 +37,34 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
 
-        if (!TextUtils.isEmpty(mNotificationses.get(position).mNotificationTitle)) {
-            holder.mTextViewNotificationName.setText(mNotificationses.get(position).mNotificationTitle);
-            holder.mCardView.setOnClickListener(onClickListener);
-            holder.mCardView.setTag(holder);
-            holder.mTextViewDate.setText(mNotificationses.get(position).mNotificationDateTime);
-        } else
-            holder.mCardView.setVisibility(View.GONE);
+
+        if (!TextUtils.isEmpty(mNotificationses.get(position).mNotificationImageUrl)) {
+            holder.mCardViewTexts.setVisibility(View.GONE);
+            holder.mCardViewImage.setVisibility(View.VISIBLE);
+
+            holder.mCardViewImage.setOnClickListener(onClickListener);
+            holder.mCardViewImage.setTag(holder);
+
+            Picasso.get()
+                    .load(mNotificationses.get(position).mNotificationImageUrl)
+                    .placeholder(R.mipmap.ic_launcher)
+                    .error(R.drawable.ic_menu_alerts_push)
+                    .into(holder.mImageView);
+
+        } else {
+
+            holder.mCardViewTexts.setVisibility(View.VISIBLE);
+            holder.mCardViewImage.setVisibility(View.GONE);
+
+            if (!TextUtils.isEmpty(mNotificationses.get(position).mNotificationTitle)) {
+                holder.mTextViewNotificationName.setText(mNotificationses.get(position).mNotificationTitle);
+                holder.mCardViewTexts.setOnClickListener(onClickListener);
+                holder.mCardViewTexts.setTag(holder);
+                holder.mTextViewDate.setText(mNotificationses.get(position).mNotificationDateTime);
+            } else
+                holder.mCardViewTexts.setVisibility(View.GONE);
+        }
+
 
     }
 
@@ -52,13 +76,17 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
         TextView mTextViewNotificationName, mTextViewDate;
-        CardView mCardView;
+        CardView mCardViewTexts;
+        CardView mCardViewImage;
+        AppCompatImageView mImageView;
 
         CustomViewHolder(View itemView) {
             super(itemView);
-            mCardView = itemView.findViewById(R.id.card_view);
+            mCardViewTexts = itemView.findViewById(R.id.card_view_texts);
+            mCardViewImage = itemView.findViewById(R.id.card_view_image);
             mTextViewNotificationName = itemView.findViewById(R.id.text_notification_name);
             mTextViewDate = itemView.findViewById(R.id.text_notification_date);
+            mImageView = itemView.findViewById(R.id.item_image);
         }
     }
 

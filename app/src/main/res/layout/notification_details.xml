@@ -31,12 +31,12 @@
                     android:id="@+id/text_notification_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginEnd="05dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="05dp"
                     android:layout_marginStart="15dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_marginTop="50dp"
+                    android:layout_marginEnd="05dp"
+                    android:layout_marginRight="05dp"
+                    android:layout_marginBottom="10dp"
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:text="title"
@@ -48,12 +48,12 @@
                     android:id="@+id/text_notification_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginEnd="05dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="05dp"
                     android:layout_marginStart="15dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginEnd="05dp"
+                    android:layout_marginRight="05dp"
+                    android:layout_marginBottom="10dp"
                     android:maxLines="1"
                     android:text="date"
                     android:textColor="@color/notification_item_texts"
@@ -63,6 +63,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/title_layout"
@@ -72,12 +73,12 @@
                     android:id="@+id/message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginEnd="05dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="05dp"
                     android:layout_marginStart="15dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginEnd="05dp"
+                    android:layout_marginRight="05dp"
+                    android:layout_marginBottom="10dp"
                     android:ellipsize="end"
                     android:lineSpacingExtra="5dp"
                     android:padding="05dp"
@@ -86,6 +87,19 @@
                     app:FontName="@string/font" />
 
             </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/image_container"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@id/details">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/item_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="08dp" />
+            </RelativeLayout>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
