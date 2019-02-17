@@ -150,7 +150,8 @@ public class NotificationUtils {
             Bitmap myBitmap = BitmapFactory.decodeStream(input);
             return myBitmap;
         } catch (IOException e) {
-            e.printStackTrace();
+            if (BuildConfig.DEBUG)
+                e.printStackTrace();
             return null;
         }
     }
@@ -163,7 +164,8 @@ public class NotificationUtils {
             Ringtone r = RingtoneManager.getRingtone(mContext, alarmSound);
             r.play();
         } catch (Exception e) {
-            e.printStackTrace();
+            if (BuildConfig.DEBUG)
+                e.printStackTrace();
         }
     }
 
@@ -173,8 +175,7 @@ public class NotificationUtils {
     public static boolean isAppIsInBackground(Context context) {
         boolean isInBackground = true;
 
-        try
-        {
+        try {
             ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
                 List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
@@ -194,10 +195,9 @@ public class NotificationUtils {
                     isInBackground = false;
                 }
             }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
+        } catch (Exception e) {
+            if (BuildConfig.DEBUG)
+                e.printStackTrace();
         }
 
         return isInBackground;
@@ -215,7 +215,8 @@ public class NotificationUtils {
             Date date = format.parse(timeStamp);
             return date.getTime();
         } catch (ParseException e) {
-            e.printStackTrace();
+            if (BuildConfig.DEBUG)
+                e.printStackTrace();
         }
         return 0;
     }

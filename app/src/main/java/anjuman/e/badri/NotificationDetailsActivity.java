@@ -43,7 +43,8 @@ public class NotificationDetailsActivity extends AppCompatActivity {
                     findViewById(R.id.text_notification_date).setVisibility(View.GONE);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            if (BuildConfig.DEBUG)
+                e.printStackTrace();
         }
     }
 }

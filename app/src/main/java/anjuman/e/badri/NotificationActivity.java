@@ -62,7 +62,8 @@ public class NotificationActivity extends AppCompatActivity {
 
 
         } catch (Exception e) {
-            e.printStackTrace();
+            if (BuildConfig.DEBUG)
+                e.printStackTrace();
         }
     }
 

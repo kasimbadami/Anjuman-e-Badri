@@ -256,7 +256,8 @@ public class GcmMessageHandler extends FirebaseMessagingService {
                 new sendNotification(context).execute(title, body, imageUrl);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            if (BuildConfig.DEBUG)
+                e.printStackTrace();
         }
     }
 
@@ -366,7 +367,8 @@ public class GcmMessageHandler extends FirebaseMessagingService {
             return result.toString();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            if (BuildConfig.DEBUG)
+                e.printStackTrace();
             return null;
         }
     }
@@ -403,9 +405,11 @@ public class GcmMessageHandler extends FirebaseMessagingService {
 
 
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                if (BuildConfig.DEBUG)
+                    e.printStackTrace();
             } catch (IOException e) {
-                e.printStackTrace();
+                if (BuildConfig.DEBUG)
+                    e.printStackTrace();
             }
             return null;
         }
@@ -476,7 +480,8 @@ public class GcmMessageHandler extends FirebaseMessagingService {
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                if (BuildConfig.DEBUG)
+                    e.printStackTrace();
             }
         }
     }

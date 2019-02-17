@@ -16,7 +16,7 @@ class NotificationsManager {
         mDBHelper = DBHelper.get_Instance(context);
     }
 
-    void insertNotificationInDB(final String message, final String title,final String imageUrl) {
+    void insertNotificationInDB(final String message, final String title, final String imageUrl) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -38,7 +38,8 @@ class NotificationsManager {
                     mDBHelper.insert(Notifications._NOTIFICATIONS_TABLE_NAME, contentValues);
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    if (BuildConfig.DEBUG)
+                        e.printStackTrace();
                 }
             }
         };
@@ -66,7 +67,8 @@ class NotificationsManager {
                 return list;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            if (BuildConfig.DEBUG)
+                e.printStackTrace();
         }
         return null;
     }

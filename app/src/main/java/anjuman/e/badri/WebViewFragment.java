@@ -177,7 +177,8 @@ public class WebViewFragment extends Fragment {
 
             return viewGroup;
         } catch (Exception e) {
-            e.printStackTrace();
+            if (BuildConfig.DEBUG)
+                e.printStackTrace();
             return null;
         }
     }

@@ -157,7 +157,8 @@ public class MyInstanceIDListenerService extends FirebaseInstanceIdService {
             return result.toString();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            if (BuildConfig.DEBUG)
+                e.printStackTrace();
             return null;
         }
     }

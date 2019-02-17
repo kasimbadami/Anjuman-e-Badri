@@ -62,7 +62,8 @@ public class RegistrationIntentService extends IntentService {
         try {
             sendRegistrationToServer();
         } catch (Exception e) {
-            e.printStackTrace();
+            if (BuildConfig.DEBUG)
+                e.printStackTrace();
         }
     }
 
@@ -164,7 +165,8 @@ public class RegistrationIntentService extends IntentService {
             return result.toString();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            if (BuildConfig.DEBUG)
+                e.printStackTrace();
             return null;
         }
     }

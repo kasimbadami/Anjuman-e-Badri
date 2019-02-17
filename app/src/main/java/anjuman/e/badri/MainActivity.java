@@ -47,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
             fragmentTransaction.replace(R.id.content_frame, new WebViewFragment(), WebViewFragment.TAG);
             fragmentTransaction.commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            if (BuildConfig.DEBUG)
+                e.printStackTrace();
         }
     }
 

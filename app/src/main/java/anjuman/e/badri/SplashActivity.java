@@ -8,7 +8,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+
 import com.crashlytics.android.Crashlytics;
+
 import io.fabric.sdk.android.Fabric;
 
 
@@ -32,7 +34,8 @@ public class SplashActivity extends AppCompatActivity {
 
             mHandler.sendEmptyMessageDelayed(MSG_CONTINUE, DELAY);
         } catch (Exception e) {
-            e.printStackTrace();
+            if (BuildConfig.DEBUG)
+                e.printStackTrace();
         }
     }
 
