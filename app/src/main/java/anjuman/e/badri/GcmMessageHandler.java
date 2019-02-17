@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -26,9 +27,11 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Random;
 
@@ -84,11 +87,11 @@ public class GcmMessageHandler extends FirebaseMessagingService {
                 Log.e(TAG, "Notification Body: " + remoteMessage.getNotification().getBody());
             }
             // Create pending intent
-            createNotification("Anjuman-e-Badri", remoteMessage.getNotification().getBody());
+            createNotification("Anjuman-e-Badri", remoteMessage.getNotification().getBody(), "");
 
             // Save to notification database
             NotificationsManager notificationsManager = new NotificationsManager(getBaseContext());
-            notificationsManager.insertNotificationInDB(remoteMessage.getNotification().getBody(), "Anjuman-e-Badri");
+            notificationsManager.insertNotificationInDB(remoteMessage.getNotification().getBody(), "Anjuman-e-Badri", "");
         }
 
         // Check if message contains a data payload.
@@ -130,18 +133,22 @@ public class GcmMessageHandler extends FirebaseMessagingService {
 
         try {
             JSONObject notification = json.getJSONObject("notification");
-            String title = notification.getString("title");
-            String message = notification.getString("body");
+            String title = notification.optString("title");
+            String message = notification.optString("body");
+            String image = notification.optString("image");
+            String picture = notification.optString("picture");
             if (BuildConfig.DEBUG) {
                 Log.e(TAG, "title: " + title);
                 Log.e(TAG, "body: " + message);
+                Log.e(TAG, "image: " + image);
+                Log.e(TAG, "picture: " + picture);
             }
             // Create pending intent
-            createNotification(title, message);
+            createNotification(title, message, image);
 
             // Save to notification database
             NotificationsManager notificationsManager = new NotificationsManager(getBaseContext());
-            notificationsManager.insertNotificationInDB(message, title);
+            notificationsManager.insertNotificationInDB(message, title, image);
 
             /*if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
                 // app is in foreground, broadcast the push message
@@ -193,58 +200,61 @@ public class GcmMessageHandler extends FirebaseMessagingService {
     }
 
     // Creates notification based on title and body received
-    private void createNotification(String title, String body) {
+    private void createNotification(String title, String body, String imageUrl) {
         try {
-            Context context = getBaseContext();
 
-            Intent notificationActivity = new Intent(context, NotificationActivity.class);
+            if (TextUtils.isEmpty(imageUrl)) {
+                Context context = getBaseContext();
 
-            NotificationManager mNotificationManager = (NotificationManager) context
-                    .getSystemService(Context.NOTIFICATION_SERVICE);
+                Intent notificationActivity = new Intent(context, NotificationActivity.class);
 
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationActivity, 0);
+                NotificationManager mNotificationManager = (NotificationManager) context
+                        .getSystemService(Context.NOTIFICATION_SERVICE);
 
-            NotificationCompat.Builder mBuilder;
-            String NOTIFICATION_CHANNEL_ID = "my_channel_id_01";
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationActivity, 0);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notifications", NotificationManager.IMPORTANCE_DEFAULT);
+                NotificationCompat.Builder mBuilder;
+                String NOTIFICATION_CHANNEL_ID = "my_channel_id_01";
 
-                // Configure the notification channel.
-                notificationChannel.setDescription("Channel description");
-                notificationChannel.enableLights(true);
-//                notificationChannel.setLightColor(Color.RED);
-                notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
-                notificationChannel.enableVibration(true);
-                if (mNotificationManager != null) {
-                    mNotificationManager.createNotificationChannel(notificationChannel);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notifications", NotificationManager.IMPORTANCE_DEFAULT);
+
+                    notificationChannel.setDescription("Channel description");
+                    notificationChannel.enableLights(true);
+                    notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+                    notificationChannel.enableVibration(true);
+                    if (mNotificationManager != null) {
+                        mNotificationManager.createNotificationChannel(notificationChannel);
+                    }
+
+                    mBuilder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
+                } else {
+                    mBuilder = new NotificationCompat.Builder(context);
                 }
+                mBuilder.setSmallIcon(R.drawable.ic_menu_alerts_push)
+                        .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true);
 
-                mBuilder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
+                if (!TextUtils.isEmpty(body))
+                    mBuilder.setContentText(body);
+
+                if (!TextUtils.isEmpty(title))
+                    mBuilder.setContentTitle(title);
+
+                Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+                mBuilder.setLargeIcon(bm);
+
+                mBuilder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
+
+
+                if (mNotificationManager != null) {
+                    mNotificationManager.notify(new Random().nextInt(), mBuilder.build());
+                }
             } else {
-                mBuilder = new NotificationCompat.Builder(context);
+                Context context = getBaseContext();
+                new sendNotification(context).execute(title, body, imageUrl);
             }
-            mBuilder.setSmallIcon(R.drawable.ic_menu_alerts_push)
-                    .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                    .setContentIntent(pendingIntent)
-                    .setAutoCancel(true);
-
-            if (!TextUtils.isEmpty(body))
-                mBuilder.setContentText(body);
-
-            if (!TextUtils.isEmpty(title))
-                mBuilder.setContentTitle(title);
-
-            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-            mBuilder.setLargeIcon(bm);
-
-            mBuilder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
-
-
-            if (mNotificationManager != null) {
-                mNotificationManager.notify(new Random().nextInt(), mBuilder.build());
-            }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -358,6 +368,116 @@ public class GcmMessageHandler extends FirebaseMessagingService {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+
+    private class sendNotification extends AsyncTask<String, Void, Bitmap> {
+
+        Context context;
+        String title;
+        String body;
+        String imageUrl;
+
+        sendNotification(Context context) {
+            super();
+            this.context = context;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+
+            InputStream in;
+            title = params[0];
+            body = params[1];
+            imageUrl = params[2];
+
+            try {
+
+                URL url = new URL(imageUrl);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                in = connection.getInputStream();
+                return BitmapFactory.decodeStream(in);
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+
+            super.onPostExecute(result);
+            try {
+
+                NotificationManager mNotificationManager = (NotificationManager) context
+                        .getSystemService(Context.NOTIFICATION_SERVICE);
+
+                Intent notificationActivity = new Intent(context, NotificationActivity.class);
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationActivity, 0);
+
+                NotificationCompat.Builder mBuilder;
+                String NOTIFICATION_CHANNEL_ID = "my_channel_id_01";
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notifications", NotificationManager.IMPORTANCE_DEFAULT);
+
+                    notificationChannel.setDescription("Channel description");
+                    notificationChannel.enableLights(true);
+                    notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+                    notificationChannel.enableVibration(true);
+                    if (mNotificationManager != null) {
+                        mNotificationManager.createNotificationChannel(notificationChannel);
+                    }
+
+                    mBuilder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
+                } else {
+                    mBuilder = new NotificationCompat.Builder(context);
+                }
+                mBuilder.setSmallIcon(R.drawable.ic_menu_alerts_push)
+                        .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true);
+
+                if (!TextUtils.isEmpty(body))
+                    mBuilder.setContentText(body);
+
+                if (!TextUtils.isEmpty(title))
+                    mBuilder.setContentTitle(title);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    if (result != null)
+                        mBuilder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(result));
+
+                    Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+                    mBuilder.setLargeIcon(bm);
+
+                } else {
+                    if (result != null)
+                        mBuilder.setLargeIcon(result);
+                    else {
+                        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+                        mBuilder.setLargeIcon(bm);
+                    }
+                }
+
+
+                mBuilder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
+
+
+                if (mNotificationManager != null) {
+                    mNotificationManager.notify(new Random().nextInt(), mBuilder.build());
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -16,7 +16,7 @@ class NotificationsManager {
         mDBHelper = DBHelper.get_Instance(context);
     }
 
-    void insertNotificationInDB(final String message, final String title) {
+    void insertNotificationInDB(final String message, final String title,final String imageUrl) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -27,6 +27,7 @@ class NotificationsManager {
 
                     contentValues.put(Notifications._NOTIFICATIONTITLE, title);
                     contentValues.put(Notifications._NOTIFICATIONMESSAGE, message);
+                    contentValues.put(Notifications._NOTIFICATIONIMAGEURL, imageUrl);
 
                     Calendar calendar = Calendar.getInstance();
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy   hh:mm:ss a");
@@ -57,6 +58,7 @@ class NotificationsManager {
                     NotificationPOJO notificationPOJO = new NotificationPOJO();
                     notificationPOJO.mNotificationTitle = cursor.getString(cursor.getColumnIndex(Notifications._NOTIFICATIONTITLE));
                     notificationPOJO.mNotificationMessage = cursor.getString(cursor.getColumnIndex(Notifications._NOTIFICATIONMESSAGE));
+                    notificationPOJO.mNotificationImageUrl = cursor.getString(cursor.getColumnIndex(Notifications._NOTIFICATIONIMAGEURL));
                     notificationPOJO.mNotificationDateTime = cursor.getString(cursor.getColumnIndex(Notifications.NOTIFICATION_DATE));
 
                     list.add(notificationPOJO);
