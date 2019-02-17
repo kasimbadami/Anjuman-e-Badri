@@ -1,10 +1,8 @@
 package anjuman.e.badri;
 
-import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +11,6 @@ import android.graphics.BitmapFactory;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.text.Html;
 import android.text.TextUtils;
@@ -26,7 +23,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Ravi on 31/03/15.
@@ -172,7 +168,7 @@ public class NotificationUtils {
     /**
      * Method checks if the app is in background or not
      */
-    public static boolean isAppIsInBackground(Context context) {
+   /* public static boolean isAppIsInBackground(Context context) {
         boolean isInBackground = true;
 
         try {
@@ -201,7 +197,7 @@ public class NotificationUtils {
         }
 
         return isInBackground;
-    }
+    }*/
 
     // Clears notification tray messages
     public static void clearNotifications(Context context) {

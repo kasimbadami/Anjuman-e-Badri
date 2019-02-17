@@ -14,7 +14,6 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -112,7 +111,7 @@ public class GcmMessageHandler extends FirebaseMessagingService {
     /**
      * @param message -
      */
-    private void handleNotification(String message) {
+   /* private void handleNotification(String message) {
         if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
             // app is in foreground, broadcast the push message
             Intent pushNotification = new Intent(PUSH_NOTIFICATION);
@@ -125,8 +124,7 @@ public class GcmMessageHandler extends FirebaseMessagingService {
         } else {
             // If the app is in background, firebase itself handles the notification
         }
-    }
-
+    }*/
     private void handleDataMessage(JSONObject json) {
         if (BuildConfig.DEBUG)
             Log.e(TAG, "@@@push json: " + json.toString());
