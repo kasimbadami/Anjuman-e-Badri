@@ -77,7 +77,7 @@
                 android:layout_marginTop="06dp"
                 android:layout_marginEnd="06dp"
                 android:layout_marginRight="06dp"
-                android:layout_marginBottom="06dp" />
+                android:layout_marginBottom="12dp" />
 
             <anjuman.e.badri.CustomTextView
                 android:id="@+id/text_notification_date_image"

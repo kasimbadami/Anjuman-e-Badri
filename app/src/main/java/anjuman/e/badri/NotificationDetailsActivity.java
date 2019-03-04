@@ -1,5 +1,6 @@
 package anjuman.e.badri;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -36,7 +37,7 @@ public class NotificationDetailsActivity extends AppCompatActivity {
             Bundle extras = getIntent().getExtras();
             if (extras != null && extras.containsKey("POSITION")) {
                 int position = extras.getInt("POSITION");
-                NotificationPOJO notification = NotificationActivity.mNotificationses.get(position);
+                final NotificationPOJO notification = NotificationActivity.mNotificationses.get(position);
 
                 ((TextView) findViewById(R.id.text_notification_name)).setText(notification.mNotificationTitle);
                 ((TextView) findViewById(R.id.message)).setText(notification.mNotificationMessage);
@@ -53,6 +54,15 @@ public class NotificationDetailsActivity extends AppCompatActivity {
                             .placeholder(R.mipmap.ic_launcher)
                             .error(R.drawable.ic_menu_alerts_push)
                             .into(imageView);
+
+                    imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(NotificationDetailsActivity.this, FullScreenActivity.class);
+                            intent.putExtra(FullScreenActivity.KEY_URL, notification.mNotificationImageUrl);
+                            startActivityForResult(intent,100);
+                        }
+                    });
                 } else {
                     findViewById(R.id.image_container).setVisibility(View.GONE);
                 }
