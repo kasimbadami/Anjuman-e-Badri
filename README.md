@@ -16,3 +16,9 @@ Sender ID - 590775243899
 
 # Fabric / crash-lytics #
 URL - https://fabric.io/home
+
+Login in app with:
+Username: 20382166
+Password:20382166
+
+Test notifications with : http://jabalpur.technologyworkshops.net/index.php/app/mobileapp/sendnotificationstest

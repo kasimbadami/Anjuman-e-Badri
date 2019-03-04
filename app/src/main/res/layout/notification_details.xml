@@ -39,7 +39,6 @@
                     android:layout_marginBottom="10dp"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text="title"
                     android:textColor="@color/notification_item_texts"
                     android:textSize="18sp"
                     app:FontName="@string/font" />
@@ -55,7 +54,6 @@
                     android:layout_marginRight="05dp"
                     android:layout_marginBottom="10dp"
                     android:maxLines="1"
-                    android:text="date"
                     android:textColor="@color/notification_item_texts"
                     android:textSize="16sp"
                     app:FontName="@string/font" />
@@ -73,8 +71,8 @@
                     android:id="@+id/message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="05dp"
                     android:layout_marginRight="05dp"
@@ -82,7 +80,7 @@
                     android:ellipsize="end"
                     android:lineSpacingExtra="5dp"
                     android:padding="05dp"
-                    android:textColor="#009688"
+                    android:textColor="@color/notification_card_bg"
                     android:textSize="18sp"
                     app:FontName="@string/font" />
 
@@ -91,14 +89,22 @@
             <RelativeLayout
                 android:id="@+id/image_container"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_below="@id/details">
+                android:layout_height="250dp"
+                android:layout_below="@id/details"
+                android:layout_marginStart="07dp"
+                android:layout_marginLeft="07dp"
+                android:gravity="start">
+
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/item_image"
-                    android:layout_width="match_parent"
+                    android:layout_width="250dp"
                     android:layout_height="match_parent"
-                    android:layout_margin="08dp" />
+                    android:layout_marginStart="08dp"
+                    android:layout_marginLeft="08dp"
+                    android:layout_marginEnd="08dp"
+                    android:layout_marginRight="08dp"
+                    android:layout_marginBottom="08dp" />
             </RelativeLayout>
         </RelativeLayout>
     </android.support.v7.widget.CardView>

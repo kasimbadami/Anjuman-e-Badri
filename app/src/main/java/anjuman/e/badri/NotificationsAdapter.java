@@ -51,6 +51,8 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
                     .error(R.drawable.ic_menu_alerts_push)
                     .into(holder.mImageView);
 
+            holder.mTextViewDateImage.setText(mNotificationses.get(position).mNotificationDateTime);
+
         } else {
 
             holder.mCardViewTexts.setVisibility(View.VISIBLE);
@@ -75,7 +77,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        TextView mTextViewNotificationName, mTextViewDate;
+        TextView mTextViewNotificationName, mTextViewDate, mTextViewDateImage;
         CardView mCardViewTexts;
         CardView mCardViewImage;
         AppCompatImageView mImageView;
@@ -87,6 +89,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
             mTextViewNotificationName = itemView.findViewById(R.id.text_notification_name);
             mTextViewDate = itemView.findViewById(R.id.text_notification_date);
             mImageView = itemView.findViewById(R.id.item_image);
+            mTextViewDateImage = itemView.findViewById(R.id.text_notification_date_image);
         }
     }
 

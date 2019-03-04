@@ -10,11 +10,11 @@
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view_texts"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="150dp"
         android:layout_gravity="center"
         android:layout_marginTop="05dp"
         android:layout_marginBottom="05dp"
-        card_view:cardBackgroundColor="@color/notification_card_bg"
+        card_view:cardBackgroundColor="@color/notification_item_texts"
         card_view:cardCornerRadius="5dp"
         card_view:cardElevation="5dp"
         card_view:cardUseCompatPadding="true">
@@ -31,7 +31,7 @@
                 android:layout_margin="10dp"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:textColor="@color/notification_item_texts"
+                android:textColor="@color/notification_card_bg"
                 android:textSize="18sp"
                 app:FontName="@string/font" />
 
@@ -44,8 +44,8 @@
                 android:layout_alignParentBottom="true"
                 android:layout_margin="08dp"
                 android:maxLines="1"
-                android:textColor="@color/notification_item_texts"
-                android:textSize="16sp"
+                android:textColor="@color/notification_card_bg"
+                android:textSize="14sp"
                 app:FontName="@string/font" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
@@ -56,7 +56,7 @@
         android:id="@+id/card_view_image"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_gravity="center"
+        android:layout_gravity="start"
         android:layout_marginTop="05dp"
         android:layout_marginBottom="05dp"
         card_view:cardBackgroundColor="@color/notification_item_texts"
@@ -70,9 +70,14 @@
 
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/item_image"
-                android:layout_width="match_parent"
+                android:layout_width="200dp"
                 android:layout_height="match_parent"
-                android:layout_margin="08dp" />
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="06dp"
+                android:layout_marginEnd="06dp"
+                android:layout_marginRight="06dp"
+                android:layout_marginBottom="06dp" />
 
             <anjuman.e.badri.CustomTextView
                 android:id="@+id/text_notification_date_image"
@@ -83,8 +88,8 @@
                 android:layout_alignParentBottom="true"
                 android:layout_margin="08dp"
                 android:maxLines="1"
-                android:textColor="@color/notification_item_texts"
-                android:textSize="16sp"
+                android:textColor="@color/notification_card_bg"
+                android:textSize="14sp"
                 app:FontName="@string/font" />
 
         </RelativeLayout>
