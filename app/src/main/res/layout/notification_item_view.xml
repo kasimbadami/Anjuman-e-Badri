@@ -68,16 +68,27 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/item_image"
-                android:layout_width="200dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="12dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="06dp"
-                android:layout_marginEnd="06dp"
-                android:layout_marginRight="06dp"
-                android:layout_marginBottom="12dp" />
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/item_image"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="06dp"
+                    android:layout_marginEnd="06dp"
+                    android:layout_marginRight="06dp"
+                    android:layout_marginBottom="12dp" />
+
+                <ProgressBar
+                    android:id="@+id/progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center" />
+            </FrameLayout>
 
             <anjuman.e.badri.CustomTextView
                 android:id="@+id/text_notification_date_image"

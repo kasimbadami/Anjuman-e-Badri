@@ -2,7 +2,9 @@ package anjuman.e.badri;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -10,8 +12,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -35,7 +39,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final CustomViewHolder holder, int position) {
 
 
         if (!TextUtils.isEmpty(mNotificationses.get(position).mNotificationImageUrl)) {
@@ -45,11 +49,23 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
             holder.mCardViewImage.setOnClickListener(onClickListener);
             holder.mCardViewImage.setTag(holder);
 
+            holder.progress.getIndeterminateDrawable()
+                    .setColorFilter(ContextCompat.getColor(mActivity, R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+
             Picasso.get()
                     .load(mNotificationses.get(position).mNotificationImageUrl)
-                    .placeholder(R.mipmap.ic_launcher)
                     .error(R.drawable.ic_menu_alerts_push)
-                    .into(holder.mImageView);
+                    .into(holder.mImageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            holder.progress.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+
+                        }
+                    });
 
             holder.mTextViewDateImage.setText(mNotificationses.get(position).mNotificationDateTime);
 
@@ -81,6 +97,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         CardView mCardViewTexts;
         CardView mCardViewImage;
         AppCompatImageView mImageView;
+        ProgressBar progress;
 
         CustomViewHolder(View itemView) {
             super(itemView);
@@ -90,6 +107,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
             mTextViewDate = itemView.findViewById(R.id.text_notification_date);
             mImageView = itemView.findViewById(R.id.item_image);
             mTextViewDateImage = itemView.findViewById(R.id.text_notification_date_image);
+            progress = itemView.findViewById(R.id.progress);
         }
     }
 
