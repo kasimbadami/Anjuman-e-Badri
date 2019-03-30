@@ -22,6 +22,9 @@ Login in app with:
 Username: 20382166
 Password:20382166
 
+Release build tested with -
+User - 20382052 / 20382052
+
 # Test notifications URL #
 http://jabalpur.technologyworkshops.net/index.php/app/mobileapp/sendnotificationstest
 
