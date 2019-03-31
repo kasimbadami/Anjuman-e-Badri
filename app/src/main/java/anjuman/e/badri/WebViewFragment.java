@@ -76,6 +76,8 @@ public class WebViewFragment extends Fragment {
             webSettings.setBuiltInZoomControls(false);
             webSettings.setUseWideViewPort(true);
 
+            webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+
             mWebView.setWebViewClient(new WebViewClient() {
 
                 @Override
@@ -95,8 +97,15 @@ public class WebViewFragment extends Fragment {
                     if (mProgressDialog != null && mProgressDialog.isShowing())
                         isProgressVisible = true;
 
-                    if (!isProgressVisible)
-                        mProgressDialog = ProgressDialog.show(activity, "Please Wait!", "Loading...");
+                    if (!isProgressVisible) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                            if (!activity.isDestroyed()) {
+                                mProgressDialog = ProgressDialog.show(activity, "Please Wait!", "Loading...");
+                            }
+                        } else {
+                            mProgressDialog = ProgressDialog.show(activity, "Please Wait!", "Loading...");
+                        }
+                    }
                 }
 
                 @Override
@@ -119,6 +128,10 @@ public class WebViewFragment extends Fragment {
                     super.onPageFinished(view, url);
                     if (mProgressDialog != null)
                         mProgressDialog.dismiss();
+
+                    mWebView.setVisibility(View.VISIBLE);
+                    mEmptyView.setVisibility(View.GONE);
+
 
                     if (!TextUtils.isEmpty(view.getTitle())) {
                         String title = view.getTitle().toLowerCase();
