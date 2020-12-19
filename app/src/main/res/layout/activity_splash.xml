@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".activities.SplashActivity">
+    android:fitsSystemWindows="true">
 
     <ImageView
         android:id="@+id/splash_logo_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/splashscreen"
+        android:scaleType="centerCrop"
+        android:background="@drawable/img_splash"
         android:contentDescription="@string/app_name" />
 
 </RelativeLayout>

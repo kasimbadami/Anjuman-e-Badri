@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#BB9705</color>
-    <color name="colorPrimaryDark">#A28304</color>
+    <!--<color name="colorPrimary">#BB9705</color>-->
+    <color name="colorPrimary">#8A2900</color>
+    <color name="colorPrimaryDark">#8A2900</color>
+    <!--<color name="colorPrimaryDark">#A28304</color>-->
     <color name="colorAccent">#FF4081</color>
-    <color name="notification_screen_bg">#BB9705</color>
+    <color name="notification_screen_bg">#8A2900</color>
     <color name="notification_item_texts">#FFFFFF</color>
-    <color name="notification_card_bg">#BB9705</color>
+    <color name="notification_card_bg">#8A2900</color>
+
 </resources>

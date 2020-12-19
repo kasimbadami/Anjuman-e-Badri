@@ -1,4 +1,4 @@
-package anjuman.e.badri;
+package mumineen.connect.app;
 
 import org.junit.Test;
 

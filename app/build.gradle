@@ -19,13 +19,13 @@ repositories {
 
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 30
+    buildToolsVersion "30.0.0"
 
     defaultConfig {
-        applicationId "anjuman.e.badri"
+        applicationId "mumineen.connect.app"
         minSdkVersion 15
-        targetSdkVersion 28
+        targetSdkVersion 30
         versionCode 2
         versionName "1.1"
     }
@@ -42,9 +42,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
+def lifeCycleExtensionVersion = '1.1.1'
+def retrofitVersion = '2.3.0'
+def daggerVersion = '2.13'
+def rxJavaVersion = '2.0.1'
+
 dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:2.0.1'
+
 //    compile fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
     implementation 'com.android.support:appcompat-v7:28.0.0'
@@ -57,6 +68,19 @@ dependencies {
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxJavaVersion"
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+    implementation "android.arch.lifecycle:extensions:$lifeCycleExtensionVersion"
+
+    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$daggerVersion"
 }
 
 apply plugin: 'com.google.gms.google-services'

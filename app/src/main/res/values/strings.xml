@@ -1,13 +1,25 @@
 <resources>
-    <string name="app_name">Jabalpur Jamaat Mumineen App</string>
+    <!--<string name="app_name">Jabalpur Jamaat Mumineen App</string>-->
+    <string name="app_name">Mumineen Connect App</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="no_internet">No internet Connection.\n Please try after connecting to network.</string>
+    <string name="no_internet">Network unavailable, please try again later.</string>
     <string name="webpage_load_error">Error while loading the page. Please try again after some time.</string>
+    <string name="something_went_wrong">Something went wrong, please try again later.</string>
     <string name="notifications">Notifications</string>
     <string name="please_wait">Please Wait…</string>
     <string name="font">calibri.ttf</string>
     <string name="no_notifications">Currently there are no notifications.</string>
+
+    <string name="its_id">ITS ID</string>
+    <string name="do_you_have_password">Do you have password?</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="login_successful">Login successful</string>
+    <string name="response_url_missing">Response url missing, contact to admin</string>
+    <string name="session_expired">Session expired</string>
     <!--<string name="gcm_defaultSenderId">256653647969</string>-->
 </resources>

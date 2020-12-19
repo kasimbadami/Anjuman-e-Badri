@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="anjuman.e.badri.WebViewFragment">
+    tools:context="mumineen.connect.app.WebViewFragment">
 
     <WebView
         android:id="@+id/web_view"
@@ -32,6 +32,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_marginBottom="70dp"
         android:background="@android:color/transparent"
         android:clickable="true"
         android:src="@drawable/ic_menu_alerts"

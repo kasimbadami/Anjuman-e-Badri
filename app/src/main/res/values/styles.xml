@@ -3,16 +3,30 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
+  <!--  <style name="AppTheme.Splash" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/splash_bg</item>
+    </style>-->
 
     <style name="floating_action_button">
         <item name="android:layout_marginLeft">0dp</item>
         <item name="android:layout_marginTop">0dp</item>
         <item name="android:layout_marginRight">20dp</item>
         <item name="android:layout_marginBottom">20dp</item>
+    </style>
+
+    <style name="switch_theme" parent="Theme.AppCompat.Light">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
 
 </resources>

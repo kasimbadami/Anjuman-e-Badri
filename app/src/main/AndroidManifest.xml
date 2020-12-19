@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="anjuman.e.badri">
+    package="mumineen.connect.app">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -15,35 +15,31 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity android:name="mumineen.connect.app.view.LoginActivity"></activity>
         <activity
-            android:name=".FullScreenActivity"
-            android:parentActivityName=".NotificationDetailsActivity" />
-
-        <activity android:name=".MainActivity" />
-
-        <activity android:name=".SplashActivity">
+            android:name="mumineen.connect.app.FullScreenActivity"
+            android:parentActivityName="mumineen.connect.app.NotificationDetailsActivity" />
+        <activity android:name="mumineen.connect.app.MainActivity" />
+        <activity android:name="mumineen.connect.app.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".NotificationActivity"
+            android:name="mumineen.connect.app.NotificationActivity"
             android:launchMode="singleInstance" />
-
         <activity
-            android:name=".NotificationDetailsActivity"
+            android:name="mumineen.connect.app.NotificationDetailsActivity"
             android:launchMode="singleInstance">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="anjuman.e.badri.NotificationActivity" />
+                android:value="mumineen.connect.app.NotificationActivity" />
         </activity>
 
         <service
-            android:name=".RegistrationIntentService"
+            android:name="mumineen.connect.app.RegistrationIntentService"
             android:exported="false" />
         <!--
 <service android:name="anjuman.e.badri.MyInstanceIDListenerService">
@@ -74,7 +70,7 @@
         </receiver>
         -->
         <service
-            android:name=".GcmMessageHandler"
+            android:name="mumineen.connect.app.GcmMessageHandler"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
