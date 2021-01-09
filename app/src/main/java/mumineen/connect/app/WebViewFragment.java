@@ -43,7 +43,7 @@ public class WebViewFragment extends Fragment {
     private TextView mEmptyView;
     private MainActivity activity;
     private ProgressDialog mProgressDialog;
-    private FloatingActionButton mNotificationActionButton;
+   // private FloatingActionButton mNotificationActionButton;
     public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
 
     boolean forceLogin =false;
@@ -70,7 +70,7 @@ public class WebViewFragment extends Fragment {
             View viewGroup = inflater.inflate(R.layout.fragment_web_view, container, false);
 
             mEmptyView = viewGroup.findViewById(R.id.no_internet);
-            mNotificationActionButton = viewGroup.findViewById(R.id.notification_id);
+           // mNotificationActionButton = viewGroup.findViewById(R.id.notification_id);
             mWebView = viewGroup.findViewById(R.id.web_view);
 
             CookieManager.getInstance().setAcceptCookie(true);
@@ -105,7 +105,7 @@ public class WebViewFragment extends Fragment {
 
                     super.onPageStarted(view, url, favicon);
 
-                   // url=url+"/gotophone/+919766256194";
+                    //url=url+"/gotophone/+919766256194";
                    //url=url+"/gotoemail/dnyanesh.m88@gmail.com";
                    //url=url+"/gotonotify";
 
@@ -126,9 +126,9 @@ public class WebViewFragment extends Fragment {
                             startActivity(new Intent(getActivity(), LoginActivity.class));
                             getActivity().finish();
                         }
-                        else if(url.contains(AppConstants.GO_TO_NOTIFICATIONS))
+                        else if(url.contains(AppConstants.GO_TO_NOTIFICATIONS) && activity != null)
                         {
-                            mNotificationActionButton.performClick();
+                                activity.startActivity(new Intent(activity, NotificationActivity.class));
                         }
                         else if(url.contains(AppConstants.GO_TO_PHONE))
                         {
@@ -194,7 +194,7 @@ public class WebViewFragment extends Fragment {
                         mWebView.setVisibility(View.GONE);
                         mEmptyView.setVisibility(View.VISIBLE);
                         mEmptyView.setText(R.string.webpage_load_error);
-                        mNotificationActionButton.setVisibility(View.GONE);
+                       // mNotificationActionButton.setVisibility(View.GONE);
                     }
                 }
 
@@ -212,10 +212,10 @@ public class WebViewFragment extends Fragment {
                         String title = view.getTitle().toLowerCase();
 
                         if (getActivity() != null && isAdded()) {
-                            if (title.equalsIgnoreCase(getString(R.string.app_name)))
+                            /*if (title.equalsIgnoreCase(getString(R.string.app_name)))
                                 mNotificationActionButton.setVisibility(View.GONE);
                             else
-                                mNotificationActionButton.setVisibility(View.VISIBLE);
+                                mNotificationActionButton.setVisibility(View.VISIBLE);*/
 
                             if (title.equalsIgnoreCase("Dashboard")) {
                                 String urlSeparated[] = url.split("/");
@@ -252,19 +252,19 @@ public class WebViewFragment extends Fragment {
                     mEmptyView.setVisibility(View.GONE);
                 } else {
                     mWebView.setVisibility(View.GONE);
-                    mNotificationActionButton.setVisibility(View.GONE);
+                  //  mNotificationActionButton.setVisibility(View.GONE);
                     mEmptyView.setVisibility(View.VISIBLE);
                     if (isAdded())
                         mEmptyView.setText(getString(R.string.no_internet));
                 }
 
-                mNotificationActionButton.setOnClickListener(new View.OnClickListener() {
+               /* mNotificationActionButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (activity != null)
                             activity.startActivity(new Intent(activity, NotificationActivity.class));
                     }
-                });
+                });*/
             }
             return viewGroup;
         } catch (Exception e) {
