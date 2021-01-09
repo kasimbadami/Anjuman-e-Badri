@@ -3,8 +3,13 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -14,20 +19,35 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import mumineen.connect.app.GcmMessageHandler;
 import mumineen.connect.app.MainActivity;
 import mumineen.connect.app.R;
+import mumineen.connect.app.RegistrationIntentService;
 import mumineen.connect.app.model.LoginRequest;
 import mumineen.connect.app.utils.MyNetworkManager;
 import mumineen.connect.app.viewmodel.ForgotPasswordViewModel;
 import mumineen.connect.app.viewmodel.LoginViewModel;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.ACCESS_NETWORK_STATE;
+import static android.Manifest.permission.BLUETOOTH;
+import static android.Manifest.permission.BLUETOOTH_ADMIN;
+import static android.Manifest.permission.CALL_PHONE;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.READ_PHONE_STATE;
+import static android.Manifest.permission.RECORD_AUDIO;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 public class LoginActivity extends AppCompatActivity {
     View loginProgress;
     EditText etPassword;
+    EditText etItsId;
     TextView tvLblPassword;
     Switch passwordSwitch;
     LoginViewModel loginViewModel;
     ForgotPasswordViewModel forgotPasswordViewModel;
+    static final int REQUEST_PERMISSION_CODE = 333;
 
 
     @Override
@@ -45,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         TextView tvLblDoYouHavePassword = findViewById(R.id.tvLblDoYouHavePassword);
         tvLblDoYouHavePassword.setTypeface(tfCalibri);
         loginProgress = findViewById(R.id.loginProgress);
-        final EditText etItsId = findViewById(R.id.etItsId);
+        etItsId = findViewById(R.id.etItsId);
         etItsId.setTypeface(tfCalibri);
         tvLblPassword = findViewById(R.id.tvLblPassword);
         tvLblPassword.setTypeface(tfCalibri);
@@ -84,29 +104,13 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(view -> {
             if(MyNetworkManager.isNetworkConnected(LoginActivity.this))
             {
-                try
+                if(checkPermission())
                 {
-                    LoginRequest loginRequest = new LoginRequest();
-                    loginRequest.setUsername(etItsId.getText().toString());
-
-                    if(passwordSwitch.isChecked())
-                    {
-                        SharedPreferences sharedPreferences = getSharedPreferences("anjuman.e.badri", Context.MODE_PRIVATE);
-                        sharedPreferences.edit().putString("USER_NAME", etItsId.getText().toString()).apply();
-
-                        // User have Password, so proceed to Login
-                        loginRequest.setPassword(etPassword.getText().toString());
-                        loginViewModel.proceedToLogin(loginRequest);
-                    }
-                    else
-                    {
-                        // User don't have Password, so proceed to Forgot-Password
-                        forgotPasswordViewModel.proceedToForgotPassword(loginRequest);
-                    }
+                    proceedLogin();
                 }
-                catch (Exception ex)
+                else
                 {
-                    Toast.makeText(LoginActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    requestPermission();
                 }
             }
             else
@@ -117,6 +121,34 @@ public class LoginActivity extends AppCompatActivity {
 
         observeLoginViewModel();
         observeForgotPasswordViewModel();
+    }
+
+    private void proceedLogin()
+    {
+        try
+        {
+            LoginRequest loginRequest = new LoginRequest();
+            loginRequest.setUsername(etItsId.getText().toString());
+
+            if(passwordSwitch.isChecked())
+            {
+                SharedPreferences sharedPreferences = getSharedPreferences("anjuman.e.badri", Context.MODE_PRIVATE);
+                sharedPreferences.edit().putString("USER_NAME", etItsId.getText().toString()).apply();
+
+                // User have Password, so proceed to Login
+                loginRequest.setPassword(etPassword.getText().toString());
+                loginViewModel.proceedToLogin(loginRequest);
+            }
+            else
+            {
+                // User don't have Password, so proceed to Forgot-Password
+                forgotPasswordViewModel.proceedToForgotPassword(loginRequest);
+            }
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(LoginActivity.this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void togglePassword(int visibility)
@@ -141,6 +173,15 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences sharedPreferences = getSharedPreferences("anjuman.e.badri", Context.MODE_PRIVATE);
                     sharedPreferences.edit().putString("URL", MainActivity.mURL).apply();
                    //sharedPreferences.edit().putString("", MainActivity.mRegisterURL).apply();
+
+                    GcmMessageHandler.REGISTRATION_ID = etItsId.getText().toString();
+
+                    // Register Notification Service
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        startForegroundService(new Intent(this, RegistrationIntentService.class));
+                    } else {
+                        startService(new Intent(this, RegistrationIntentService.class));
+                    }
 
                     startActivity(new Intent(this, MainActivity.class));
                     finish();
@@ -217,4 +258,38 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    public boolean checkPermission()
+    {
+        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), CALL_PHONE);
+        return (result1 == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void requestPermission()
+    {
+        ActivityCompat.requestPermissions(LoginActivity.this, new String[]{CALL_PHONE}, REQUEST_PERMISSION_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults)
+    {
+        switch (requestCode)
+        {
+            case REQUEST_PERMISSION_CODE:
+                if (grantResults.length> 0)
+                {
+                    boolean permission1 = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    if (permission1)
+                    {
+                        proceedLogin();
+                    }
+                    else
+                    {
+                        Toast.makeText(LoginActivity.this,getResources().getString(R.string.permission_denied),Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+        }
+    }
+
 }

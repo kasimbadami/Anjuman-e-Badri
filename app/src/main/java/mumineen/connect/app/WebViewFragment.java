@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -78,10 +79,10 @@ public class WebViewFragment extends Fragment {
             WebSettings webSettings = mWebView.getSettings();
 
             webSettings.setDomStorageEnabled(true);
-            webSettings.setDatabaseEnabled(true);
+           // webSettings.setDatabaseEnabled(true);
             // mWebView.getSettings().setDatabasePath(dbpath); //check the documentation for info about dbpath
-            webSettings.setMinimumFontSize(1);
-            webSettings.setMinimumLogicalFontSize(1);
+           // webSettings.setMinimumFontSize(1);
+            //webSettings.setMinimumLogicalFontSize(1);
 
             webSettings.setJavaScriptEnabled(true);
             webSettings.setDisplayZoomControls(false);
@@ -96,22 +97,75 @@ public class WebViewFragment extends Fragment {
                 @Override
                 public void onPageStarted(WebView view, String url, Bitmap favicon) {
 
+                   /* <base_URL>/gotophone/+919039545153
+                    Email
+                            <base_URL>/gotoemail/abc@gmal.com
+                    Notifications
+                            <base_URL>/gotonotify*/
+
                     super.onPageStarted(view, url, favicon);
+
+                   // url=url+"/gotophone/+919766256194";
+                   //url=url+"/gotoemail/dnyanesh.m88@gmail.com";
+                   //url=url+"/gotonotify";
 
                     MainActivity.mURL = url;
 
-                    // Monitor WebView url to check if session expired / Logout
-                    if(url!=null && (url.contains(AppConstants.SESSION_EXPIRED_STRING) || url.contains(AppConstants.LOGIN_STRING)))
+                    if(url!=null)
                     {
-                        if(url.contains(AppConstants.SESSION_EXPIRED_STRING))
+                        // Monitor WebView url to check if session expired / Logout
+                        if((url.contains(AppConstants.SESSION_EXPIRED_STRING) || url.contains(AppConstants.LOGIN_STRING)))
                         {
-                            Toast.makeText(getActivity(), getResources().getString(R.string.session_expired), Toast.LENGTH_SHORT).show();
-                        }
+                            if(url.contains(AppConstants.SESSION_EXPIRED_STRING))
+                            {
+                                Toast.makeText(getActivity(), getResources().getString(R.string.session_expired), Toast.LENGTH_SHORT).show();
+                            }
 
-                        MainActivity.mURL = "";
-                        Util.clearPreferences(getContext());
-                        startActivity(new Intent(getActivity(), LoginActivity.class));
-                        getActivity().finish();
+                            MainActivity.mURL = "";
+                            Util.clearPreferences(getContext());
+                            startActivity(new Intent(getActivity(), LoginActivity.class));
+                            getActivity().finish();
+                        }
+                        else if(url.contains(AppConstants.GO_TO_NOTIFICATIONS))
+                        {
+                            mNotificationActionButton.performClick();
+                        }
+                        else if(url.contains(AppConstants.GO_TO_PHONE))
+                        {
+                           String[] strArr = url.split("/");
+                           if(strArr!=null && strArr.length>0)
+                           {
+                               String strPhoneNumber = strArr[strArr.length-1];
+                               if(strPhoneNumber!=null && !strPhoneNumber.isEmpty())
+                               {
+                                   Intent callIntent = new Intent(Intent.ACTION_CALL);
+                                   callIntent.setData(Uri.parse("tel:"+strPhoneNumber));
+                                   startActivity(callIntent);
+                               }
+                           }
+                        }
+                        else if(url.contains(AppConstants.GO_TO_EMAIL))
+                        {
+                            String[] strArr = MainActivity.mURL.split("/");
+                            if(strArr!=null && strArr.length>0)
+                            {
+                                String strToEmailId = strArr[strArr.length-1];
+                                if(strToEmailId!=null && !strToEmailId.isEmpty())
+                                {
+                                    Intent emailIntent = new Intent(Intent.ACTION_SEND);
+
+                                    emailIntent.setData(Uri.parse("mailto:"));
+                                    emailIntent.setType("text/plain");
+                                    emailIntent.putExtra(Intent.EXTRA_EMAIL, strToEmailId);
+
+                                    try {
+                                        startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+                                    } catch (android.content.ActivityNotFoundException ex) {
+                                        Toast.makeText(getActivity(), "There is no email client installed.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     boolean isProgressVisible = false;
@@ -219,6 +273,7 @@ public class WebViewFragment extends Fragment {
             return null;
         }
     }
+
 
     public static boolean canGoBack() {
         if (mWebView != null)

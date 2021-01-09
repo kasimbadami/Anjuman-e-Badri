@@ -21,5 +21,6 @@
     <string name="login_successful">Login successful</string>
     <string name="response_url_missing">Response url missing, contact to admin</string>
     <string name="session_expired">Session expired</string>
+    <string name="permission_denied">Oops..! Required permission denied</string>
     <!--<string name="gcm_defaultSenderId">256653647969</string>-->
 </resources>

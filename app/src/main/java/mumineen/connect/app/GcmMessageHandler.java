@@ -43,7 +43,7 @@ public class GcmMessageHandler extends FirebaseMessagingService {
 
     private static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
     static final String GCM_TOKEN = "gcmToken";
-    static String REGISTRATION_ID;
+    public static String REGISTRATION_ID;
 
     @Override
     public void onNewToken(String s) {
@@ -60,7 +60,7 @@ public class GcmMessageHandler extends FirebaseMessagingService {
             sharedPreferences.edit().putString(GCM_TOKEN, s).apply();
 
             // Send token to server
-            sendRegistrationToServer(s);
+            sendRegistrationToServer(this);
 
         } catch (Exception e) {
             if (BuildConfig.DEBUG) {
@@ -259,10 +259,8 @@ public class GcmMessageHandler extends FirebaseMessagingService {
     }
 
 
-    /**
-     * @param token -
-     */
-    private void sendRegistrationToServer(String token) {
+
+    public void sendRegistrationToServer(Context context) {
 
         // Add custom implementation, as needed.
         if (BuildConfig.DEBUG)
@@ -271,14 +269,18 @@ public class GcmMessageHandler extends FirebaseMessagingService {
         // send network request
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("deviceId", token);
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+
+            String strGcmToken = sp.getString(GCM_TOKEN, "");
+            jsonObject.put("deviceId", strGcmToken);
             jsonObject.put("itsid", REGISTRATION_ID);
 
             String result = register(MainActivity.mRegisterURL, jsonObject.toString());
+
             if (BuildConfig.DEBUG)
                 Log.d(TAG, "@@@Registration result -> " + result);
             if (TextUtils.isEmpty(result)) {
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
                 sharedPreferences.edit().putBoolean(SENT_TOKEN_TO_SERVER, false).apply();
             } else {
                 // if registration sent was successful, store a boolean that indicates whether the generated token has been sent to server
@@ -288,18 +290,18 @@ public class GcmMessageHandler extends FirebaseMessagingService {
                     if (!TextUtils.isEmpty(status) && status.equalsIgnoreCase("success")) {
                         if (BuildConfig.DEBUG)
                             Log.d(TAG, "@@@Registration success");
-                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
                         sharedPreferences.edit().putBoolean(SENT_TOKEN_TO_SERVER, true).apply();
                     } else {
                         if (BuildConfig.DEBUG)
                             Log.d(TAG, "@@@Registration failure");
-                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
                         sharedPreferences.edit().putBoolean(SENT_TOKEN_TO_SERVER, false).apply();
                     }
                 } else {
                     if (BuildConfig.DEBUG)
                         Log.d(TAG, "@@@Registration failure");
-                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
                     sharedPreferences.edit().putBoolean(SENT_TOKEN_TO_SERVER, false).apply();
                 }
             }
@@ -308,7 +310,7 @@ public class GcmMessageHandler extends FirebaseMessagingService {
                 e.printStackTrace();
                 Log.d(TAG, "@@@Registration failure");
             }
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
             sharedPreferences.edit().putBoolean(SENT_TOKEN_TO_SERVER, false).apply();
         } catch (Exception e) {
             if (BuildConfig.DEBUG)
